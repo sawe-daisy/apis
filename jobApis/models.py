@@ -15,7 +15,6 @@ USER_TYPE = (
 class User(AbstractUser):
     firstname = CharField(_("Firstname"),blank=True, null=True,max_length=255)
     lastname = CharField(_("Lastname"),blank=True, null=True,max_length=255)
-    username = CharField(_("Username"), null=True,max_length=255, unique=False)
     email = CharField(_("Email"),blank=True, null=True,max_length=255)
     phone_no = PhoneNumberField(_("Phone Number"),blank=True,null=True)
 
