@@ -61,6 +61,11 @@ class Job(models.Model):
     description = models.CharField(max_length=500)
     country = CountryField(default = 'KE')
     location = models.CharField(max_length=20)
+    notice = models.CharField(choices = Notice_time,max_length=200,default=0)
+    salary = models.CharField(choices = salary,max_length=30, blank=True,null = True,default='confidential')
+    experience_level = models.CharField(choices = experience_length,max_length=200,default='entry')
+    experience_length = models.CharField(choices = experience_length,max_length=200,default=0)
+    interview = models.CharField(choices=Interview,max_length=20, default='walkin')
 
     def __str__(self):
         return self.function
