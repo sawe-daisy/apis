@@ -29,11 +29,16 @@ class UserSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        max_length=65, min_length=8, write_only=True)
-    email = serializers.EmailField()
-
+class JobSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['email', 'password']
+        model = Job
+        fields = ['user','function', 'location', 'notice', 'salary', 'education_level', 'description', 'job_type','experience_length', 'interview']
+
+# class LoginSerializer(serializers.ModelSerializer):
+#     password = serializers.CharField(
+#         max_length=65, min_length=8, write_only=True)
+#     email = serializers.EmailField()
+
+#     class Meta:
+#         model = User
+#         fields = ['email', 'password']

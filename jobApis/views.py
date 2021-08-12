@@ -1,12 +1,13 @@
 from rest_framework.generics import GenericAPIView
-from .serializers import UserSerializer, LoginSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import UserSerializer, JobSerializer
 from rest_framework.response import Response
-from rest_framework import permissions
+from rest_framework import permissions, serializers
 from rest_framework import status
 from .models import User, Job
 from django.contrib.auth import login
-from rest_framework import permissions
+from rest_framework import permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 from django.conf import settings
@@ -37,24 +38,13 @@ class LoginAPI(KnoxLoginView):
         login(request, user)
         return super(LoginAPI, self).post(request, format=None)
 
-class LoginView(GenericAPIView):
-    serializer_class = LoginSerializer
 
-    def post(self, request):
-        data = request.data
-        email = data.get('email', '')
-        password = data.get('password', '')
-        user = auth.authenticate(email=email, password=password)
+class jobViewSet(viewsets.ModelViewSet):
+    queryset= Job.objects.all()
+    serializer_class=JobSerializer
 
-        if user:
-            auth_token = jwt.encode(
-                {'email': user.email}, settings.JWT_SECRET_KEY, algorithm="HS256")
-
-            serializer = UserSerializer(user)
-
-            data = {'user': serializer.data, 'token': auth_token}
-
-            return Response(data, status=status.HTTP_200_OK)
-
-            # SEND RES
-        return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    @action(methods= ['get', 'post'], detail=False)
+    def newest(self, request):
+        newest= self.get_queryset().order_by('-created').last()
+        serializer=self.get_serializer_class()(newest)
+        return Response(serializer.data)

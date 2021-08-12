@@ -118,10 +118,11 @@ class Job(models.Model):
     location = models.CharField(max_length=20)
     notice = models.CharField(choices = Notice_time,max_length=200,default=0)
     salary = models.CharField(choices = salary,max_length=30, blank=True,null = True,default='confidential')
-    edeucation_level = models.CharField(choices = education_level,max_length=200,default='entry')
+    education_level = models.CharField(choices = education_level,max_length=200,default='phd')
     job_type = models.CharField(choices = job_type,max_length=200,default='Full-Time"')
     experience_length = models.CharField(choices = experience_length,max_length=200,default=0)
     interview = models.CharField(choices=Interview,max_length=20, default='walkin')
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.function
