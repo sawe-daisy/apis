@@ -1,4 +1,6 @@
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, DestroyAPIView
+from rest_framework.views import APIView
+from rest_framework.permissions import  IsAuthenticated
 from .serializers import UserSerializer, JobSerializer
 from rest_framework.response import Response
 from rest_framework import permissions, serializers
@@ -43,8 +45,27 @@ class jobViewSet(viewsets.ModelViewSet):
     queryset= Job.objects.all()
     serializer_class=JobSerializer
 
-    @action(methods= ['get', 'post'], detail=False)
+    @action(methods= ['get'], detail=False)
     def newest(self, request):
-        newest= self.get_queryset().order_by('-created').last()
+        newest= self.get_queryset().order_by('created').last()
         serializer=self.get_serializer_class()(newest)
         return Response(serializer.data)
+
+class JobList(APIView):
+    def get(self,request,format = None):
+        all_jobs = Job.objects.all()
+        serializerdata = JobSerializer(all_jobs,many = True)
+        return Response(serializerdata.data)
+    
+    permission_classes=[IsAuthenticated]
+    def post(self, request, format=None):
+        job= request.data
+        serializerdata=JobSerializer(data=request.data)
+        if serializerdata.is_valid():
+            serializerdata.save()
+            return Response(serializerdata.data, status.HTTP_201_CREATED)
+        return Response(serializerdata.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class jobDelete(DestroyAPIView):
+    pass
