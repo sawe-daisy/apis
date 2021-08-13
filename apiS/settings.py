@@ -107,7 +107,7 @@ if config('MODE')=="dev":
            'USER': config('DB_USER'),
            'PASSWORD': config('DB_PASSWORD'),
            'HOST': config('DB_HOST'),
-           'PORT': '5432',
+           'PORT': '',
        }
        
    }
@@ -125,16 +125,16 @@ DATABASES['default'].update(db_from_env)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'india',
-        'USER': 'postgres',
-        'PASSWORD': 'sawedaisy',
-        'HOST': 'localhost',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'india',
+#         'USER': 'postgres',
+#         'PASSWORD': 'sawedaisy',
+#         'HOST': 'localhost',
 
-    }
-}
+#     }
+# }
 
 
 REST_FRAMEWORK = {
