@@ -131,6 +131,8 @@ DATABASES = {
         'NAME': 'india',
         'USER': 'postgres',
         'PASSWORD': 'sawedaisy',
+        'HOST': 'localhost',
+
     }
 }
 
